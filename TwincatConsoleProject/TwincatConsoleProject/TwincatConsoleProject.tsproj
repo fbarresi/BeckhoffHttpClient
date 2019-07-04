@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4022.22">
+	<Project ProjectGUID="{58E180EC-CAB9-40B8-B2AD-47546DBB1863}" TargetNetId="5.40.71.174.1.1" Target64Bit="true" ShowHideConfigurations="#x306">
+		<System>
+			<Settings MaxCpus="4"/>
+			<Tasks>
+				<Task Id="3" Priority="20" CycleTime="10000" AmsPort="350" AdtTasks="true">
+					<Name>programm</Name>
+				</Task>
+			</Tasks>
+		</System>
+		<Plc>
+			<Project GUID="{725A8D92-DFE4-4AB0-972B-8C17F5EFD11C}" Name="ExecuteProgram" PrjFilePath="ExecuteProgram\ExecuteProgram.plcproj" TmcFilePath="ExecuteProgram\ExecuteProgram.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="ExecuteProgram\ExecuteProgram.tmc">
+					<Name>ExecuteProgram Instance</Name>
+					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+					<TaskPouOids>
+						<TaskPouOid Prio="20" OTCID="#x08502001"/>
+					</TaskPouOids>
+				</Instance>
+			</Project>
+			<Project GUID="{790937F3-60D2-411C-B3CD-E5B87F556FD0}" Name="BeckhoffHttpClient" PrjFilePath="BeckhoffHttpClient\BeckhoffHttpClient.plcproj" TmcFilePath="BeckhoffHttpClient\BeckhoffHttpClient.tmc" ReloadTmc="true" AmsPort="852" FileArchiveSettings="#x000e">
+				<Instance Id="#x08502040" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="BeckhoffHttpClient\BeckhoffHttpClient.tmc">
+					<Name>BeckhoffHttpClient Instance</Name>
+					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+				</Instance>
+			</Project>
+		</Plc>
+	</Project>
+</TcSmProject>

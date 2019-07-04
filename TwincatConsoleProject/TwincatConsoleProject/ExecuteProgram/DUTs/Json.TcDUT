@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+  <DUT Name="Json" Id="{966603dd-ae62-4bac-b7b3-7096479b4fff}">
+    <Declaration><![CDATA[TYPE Json :
+STRUCT
+	{attribute 'json' := 'message'}
+	Messaggio : STRING;
+	response : INT;
+	{attribute 'json' := 'status'}
+	stato : STRING;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

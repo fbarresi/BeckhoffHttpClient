@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+  <POU Name="HttpClient" Id="{34d9c780-99db-49b3-b63f-ca9c5a975f9d}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'signature_flag' := '1073741824'}
+FUNCTION_BLOCK PUBLIC HttpClient
+VAR_INPUT
+	Execute : BOOL; //REST Call runs on rising edge of this flag 
+	Address : STRING := 'https://dog.ceo/api/breeds/image/random'; //Rest API Address
+	CallMethod : STRING := 'GET'; //Allowed values are: GET, POST, PUT, DELETE, HEAD, OPTIONS, PATCH, MERGE, COPY.
+	Body : STRING; //Variable path or string for json body
+	ResponseCode : STRING; //Variable path to INT for response code
+	Response : STRING; //Starting variable path to the response
+	Port : UINT := 0; //Ads Port for connection. Leave 0 for Port number 851
+END_VAR
+VAR_OUTPUT
+	HasError : BOOL;
+	ErrorId : UDINT; //see  ADS error number (https://infosys.beckhoff.com/content/1033/tcplclib_tc2_utilities/45035996647981963.html) or the Win32 error code (https://infosys.beckhoff.com/content/1033/tcplclib_tc2_utilities/27021598155389323.html)
+END_VAR
+VAR
+	startProcess : NT_StartProcess;
+	getLocalAmsNetId : FB_GetLocalAmsNetId;
+	netIdRead : f_trig;
+	initialized : BOOL;
+	formatter : FB_FormatString;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[startProcess();
+getLocalAmsNetId();
+startProcess.NETID := getLocalAmsNetId.AddrString;
+startProcess.PATHSTR := 'C:\TwinCAT\Functions\Unofficial\BeckhoffHttpClient\TFU001.exe';
+startProcess.DIRNAME := 'C:\TwinCAT\Functions\Unofficial\BeckhoffHttpClient\';
+formatter(sFormat:='"%s" "%s" "%s" "%s" "%s"', arg1:=f_string(Address), arg2:=f_string(CallMethod), arg3:=f_string(ResponseCode), arg4:=f_string(Body), arg5:=f_string(Response));
+IF port <> 0 THEN
+	startProcess.COMNDLINE := CONCAT(CONCAT('-AdsPort ',CONCAT(UINT_TO_STRING(Port),' ')),formatter.sOut);
+ELSE
+	startProcess.COMNDLINE := formatter.sOut;
+END_IF
+
+netIdRead(CLK:=getLocalAmsNetId.bBusy, Q=>);
+
+IF netIdRead.Q THEN
+	IF NOT getLocalAmsNetId.bError THEN
+		initialized := TRUE;
+		getLocalAmsNetId.bExecute := FALSE;
+	ELSE
+		HasError := getLocalAmsNetId.bError;
+		ErrorId := getLocalAmsNetId.nErrId;
+	END_IF
+END_IF
+
+IF NOT initialized THEN
+	getLocalAmsNetId.bExecute := TRUE;
+END_IF
+
+startProcess.START := initialized AND Execute;
+
+IF initialized THEN
+	HasError := startProcess.ERR;
+	ErrorId := startProcess.ERRID;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="HttpClient">
+      <LineId Id="20" Count="2" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="98" Count="0" />
+      <LineId Id="95" Count="0" />
+      <LineId Id="102" Count="1" />
+      <LineId Id="101" Count="0" />
+      <LineId Id="104" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="27" Count="1" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="38" Count="1" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="16" Count="1" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="46" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+  <GVL Name="GVL" Id="{d51db366-947e-48a2-9a01-f59b16646812}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	{attribute 'federico' := 'The best'}
+	Body : ARRAY [1..10] OF STRING;
+	test : json;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>
