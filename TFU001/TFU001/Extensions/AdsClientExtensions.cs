@@ -34,31 +34,37 @@ namespace TFU001.Extensions
 
         public static JObject ReadJson(this TcAdsClient client, string variablePath)
         {
-            return client.ReadRecursive(variablePath, true);
+            return client.ReadRecursive(variablePath, new JObject(), GetVaribleNameFromFullPath(variablePath));
         }
 
-        public static JObject ReadRecursive(this TcAdsClient client, string variablePath, bool force = false)
+        public static JObject ReadRecursive(this TcAdsClient client, string variablePath, JObject parent, string jsonName, bool isChild = false)
         {
-            var jObject = new JObject();
             var symbolInfo = (ITcAdsSymbol5)client.ReadSymbolInfo(variablePath);
             var dataType = symbolInfo.DataType;
-            if (symbolInfo.HasJsonName() || force)
             {
                 if (dataType.ManagedType == null)
                 {
                     if (dataType.SubItems.Any())
                     {
-                        jObject.Add(symbolInfo.GetJsonName(), new JObject(dataType.SubItems.Where(si => si.HasJsonName()).Select(si => client.ReadRecursive(variablePath + "." + si.SubItemName))));
+                        var child = new JObject();
+                        foreach (var subItem in dataType.SubItems)
+                        {
+                            if (HasJsonName(subItem))
+                            {
+                                ReadRecursive(client, variablePath + "." + subItem.SubItemName, isChild ? child : parent, GetJsonName(subItem), true);
+                            }
+                        }
+                        if (isChild) parent.Add(jsonName, child);
                     }
                 }
                 else
                 {
                     var obj = client.ReadSymbol(symbolInfo);
-                    jObject.Add(symbolInfo.GetJsonName(), new JValue(obj));
+                    parent.Add(jsonName, new JValue(obj));
                 }
             }
 
-            return jObject;
+            return parent;
         }
 
         public static string GetVaribleNameFromFullPath(this string variablePath)
@@ -70,14 +76,18 @@ namespace TFU001.Extensions
         {
             return symbol.Attributes.FirstOrDefault(attribute => attribute.Name.Equals("json", StringComparison.InvariantCultureIgnoreCase))?.Value ?? symbol.Name.GetVaribleNameFromFullPath();
         }
-        public static string GetJsonName(this ITcAdsSubItem subItem)
+        public static string GetJsonName(this ITcAdsDataType dataType)
         {
-            return subItem.Attributes.FirstOrDefault(attribute => attribute.Name.Equals("json", StringComparison.InvariantCultureIgnoreCase))?.Value;
+            return dataType.Attributes.FirstOrDefault(attribute => attribute.Name.Equals("json", StringComparison.InvariantCultureIgnoreCase))?.Value;
         }
 
         public static bool HasJsonName(this ITcAdsSymbol5 symbol)
         {
             return symbol.Attributes.Any(attribute => attribute.Name.Equals("json", StringComparison.InvariantCultureIgnoreCase));
+        }
+        public static bool HasJsonName(this ITcAdsDataType dataType)
+        {
+            return dataType.Attributes.Any(attribute => attribute.Name.Equals("json", StringComparison.InvariantCultureIgnoreCase));
         }
 
         public static bool HasJsonName(this ITcAdsSubItem subItem)
