@@ -10,6 +10,7 @@ using RestSharp.Serialization.Json;
 using TFU001.Extensions;
 using TwinCAT.Ads;
 using System.Runtime.InteropServices;
+using Newtonsoft.Json.Linq;
 
 
 namespace TFU001
@@ -53,9 +54,10 @@ namespace TFU001
             var callAddress = Address.IsValidUrl() ? Address : await adsClient.ReadAsync<string>(Address);            
 
             var restClient = new RestClient();
-            var request = new RestRequest(callAddress, Method, DataFormat.Json);
-            //todo: read body and create json
-            //request.AddJsonBody()
+            var request = new RestRequest(callAddress, Method);
+            var jsonBody = adsClient.ReadJson(Body);
+            request.RequestFormat = DataFormat.Json;
+            request.AddParameter("text/json", jsonBody.ToString(), ParameterType.RequestBody);
 
             var response = await restClient.ExecuteTaskAsync(request);
 
@@ -64,7 +66,7 @@ namespace TFU001
             await adsClient.WriteAsync(ResponseCode, response.StatusCode);
 
             //todo: write response
-            //var jsonObject = JsonConvert.DeserializeObject(response.Content);
+            var jsonResponse = JObject.Parse(response.Content);
 
             adsClient.Disconnect();
             adsClient.Dispose();

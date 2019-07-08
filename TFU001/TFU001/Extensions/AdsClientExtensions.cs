@@ -38,7 +38,7 @@ namespace TFU001.Extensions
             return ReadRecursive(client, variablePath, new JObject(), GetVaribleNameFromFullPath(variablePath));
         }
 
-        public static JObject ReadRecursive(this TcAdsClient client, string variablePath, JObject parent, string jsonName, bool isChild = false)
+        private static JObject ReadRecursive(this TcAdsClient client, string variablePath, JObject parent, string jsonName, bool isChild = false)
         {
             var symbolInfo = (ITcAdsSymbol5)client.ReadSymbolInfo(variablePath);
             var dataType = symbolInfo.DataType;
