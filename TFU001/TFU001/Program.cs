@@ -14,6 +14,15 @@ namespace TFU001
 {
     public class Program
     {
+        [DllImport("kernel32.dll")]
+        static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        const int SW_HIDE = 0;
+        const int SW_SHOW = 5;
+        
         public static int Main(string[] args)
             => CommandLineApplication.Execute<Program>(args);
 
@@ -34,6 +43,9 @@ namespace TFU001
         }
         public async Task OnExecute()
         {
+            var handle = GetConsoleWindow();
+            ShowWindow(handle, SW_HIDE);
+            
             CreateLogger();
             var adsClient = await ConnectToBeckhoff();
             var callAddress = Address.IsValidUrl() ? Address : await adsClient.ReadAsync<string>(Address);            
