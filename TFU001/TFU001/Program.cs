@@ -9,6 +9,8 @@ using RestSharp;
 using RestSharp.Serialization.Json;
 using TFU001.Extensions;
 using TwinCAT.Ads;
+using System.Runtime.InteropServices;
+
 
 namespace TFU001
 {
