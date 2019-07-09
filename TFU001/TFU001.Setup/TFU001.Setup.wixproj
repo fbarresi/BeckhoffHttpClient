@@ -6,7 +6,7 @@
     <ProductVersion>3.10</ProductVersion>
     <ProjectGuid>43ee3d1a-e71b-4739-aed5-d91ec51a4f94</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>TFU001.Setup</OutputName>
+    <OutputName>TFU001_BeckhoffHttpClient</OutputName>
     <OutputType>Package</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
