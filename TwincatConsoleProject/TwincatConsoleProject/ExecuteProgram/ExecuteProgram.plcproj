@@ -18,6 +18,9 @@
     <Compile Include="DUTs\Json.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\unterJson.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="GVLs\GVL.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
