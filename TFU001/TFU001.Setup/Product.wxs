@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="TFU001.Setup" Language="1033" Version="1.0.0.0" Manufacturer="fbarresi" UpgradeCode="017809a0-af9e-4125-8ec7-cdfa25e34161">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate />
+
+    <Feature Id="ProductFeature" Title="TFU001 Beckhoff Http Client" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+    </Feature>
+
+
+  </Product>
+
+
+  <Fragment>
+    <SetDirectory Id="TWINCAT" Value="[WindowsVolume]TwinCAT"/>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+          <Directory Id="TWINCAT" >
+          <Directory Id="functions" Name="Functions" >
+          <Directory Id="unofficial" Name="Unofficial" >
+            <Directory Id="INSTALLFOLDER" Name="BeckhoffHttpClient" />
+          </Directory>
+          </Directory>
+          </Directory>
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER" >
+      <!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+      <Component Id="ProductComponent" Guid="8227A017-5694-4FC0-97E4-31ED11AF3AA1">
+        <!-- TODO: Insert files, registry keys, and other resources here. -->
+        <File Id="exe" Checksum="yes" Source="..\TFU001\bin\Release\net462\TFU001.exe" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>
