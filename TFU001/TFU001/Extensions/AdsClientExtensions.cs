@@ -13,11 +13,10 @@ namespace TFU001.Extensions
         {
             return Task.Run(() =>
             {
-                var handle = client.CreateVariableHandle(variablePath);
                 var symbolInfo = (ITcAdsSymbol5)client.ReadSymbolInfo(variablePath);
                 var targetType = symbolInfo.DataType.ManagedType;
                 var targetValue = targetType != null ? Convert.ChangeType(value, targetType) : value;
-                client.WriteAny(handle, targetValue);
+                client.WriteSymbol(symbolInfo, targetValue);
             });
         }
 
@@ -25,20 +24,62 @@ namespace TFU001.Extensions
         {
             return Task.Run(() =>
             {
-                var handle = client.CreateVariableHandle(variablePath);
                 var symbolInfo = (ITcAdsSymbol5)client.ReadSymbolInfo(variablePath);
-                var targetType = symbolInfo.DataType.ManagedType;
-                var obj = client.ReadAny(handle, targetType);
+                var obj = client.ReadSymbol(symbolInfo);
                 return (T) Convert.ChangeType(obj, typeof(T));
             });
         }
 
-        public static JObject ReadJson(this TcAdsClient client, string variablePath)
+        public static Task WriteJson(this TcAdsClient client, string variablePath, JObject obj)
         {
-            return ReadRecursive(client, variablePath, new JObject(), GetVaribleNameFromFullPath(variablePath));
+            return WriteRecursive(client, variablePath, obj, string.Empty);
         }
 
-        private static JObject ReadRecursive(this TcAdsClient client, string variablePath, JObject parent, string jsonName, bool isChild = false)
+        public static async Task WriteRecursive(this TcAdsClient client, string variablePath, JObject parent, string jsonName)
+        {
+            var symbolInfo = (ITcAdsSymbol5)client.ReadSymbolInfo(variablePath);
+            var dataType = symbolInfo.DataType;
+            {
+                if (dataType.Category == DataTypeCategory.Array)
+                {
+                    var array = parent.SelectToken(jsonName) as JArray;
+                    var elementCount = array.Count < dataType.Dimensions.ElementCount ? array.Count : dataType.Dimensions.ElementCount;
+                    for (int i = 0; i < elementCount; i++)
+                    {
+                        if (dataType.BaseType.ManagedType != null)
+                            await WriteAsync(client, variablePath + $"[{i + dataType.Dimensions.LowerBounds.First()}]", array[i]);
+                        else
+                        {
+                            await WriteRecursive(client, variablePath + $"[{i + dataType.Dimensions.LowerBounds.First()}]", parent, jsonName + $"[{i}]");
+                        }
+                    }
+                }
+                else if (dataType.ManagedType == null)
+                {
+                    if (dataType.SubItems.Any())
+                    {
+                        foreach (var subItem in dataType.SubItems)
+                        {
+                            if (HasJsonName(subItem))
+                            {
+                                await WriteRecursive(client, variablePath + "." + subItem.SubItemName, parent, string.IsNullOrEmpty(jsonName) ? GetJsonName(subItem) : jsonName + "." + GetJsonName(subItem));
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    await WriteAsync(client, symbolInfo.Name, parent.SelectToken(jsonName));
+                }
+            }
+
+        }
+        public static Task<JObject> ReadJson(this TcAdsClient client, string variablePath)
+        {
+            return Task.Run(() => ReadRecursive(client, variablePath, new JObject(), GetVaribleNameFromFullPath(variablePath)));
+        }
+
+        public static JObject ReadRecursive(TcAdsClient client, string variablePath, JObject parent, string jsonName, bool isChild = false)
         {
             var symbolInfo = (ITcAdsSymbol5)client.ReadSymbolInfo(variablePath);
             var dataType = symbolInfo.DataType;
@@ -75,7 +116,8 @@ namespace TFU001.Extensions
                                 ReadRecursive(client, variablePath + "." + subItem.SubItemName, isChild ? child : parent, GetJsonName(subItem), true);
                             }
                         }
-                        if (isChild) parent.Add(jsonName, child);
+                        if (isChild)
+                            parent.Add(jsonName, child);
                     }
                 }
                 else
