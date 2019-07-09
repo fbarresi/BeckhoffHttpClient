@@ -35,7 +35,7 @@ namespace TFU001.Extensions
             return WriteRecursive(client, variablePath, obj, string.Empty);
         }
 
-        public static async Task WriteRecursive(this TcAdsClient client, string variablePath, JObject parent, string jsonName)
+        private static async Task WriteRecursive(this TcAdsClient client, string variablePath, JObject parent, string jsonName)
         {
             var symbolInfo = (ITcAdsSymbol5)client.ReadSymbolInfo(variablePath);
             var dataType = symbolInfo.DataType;
@@ -79,7 +79,7 @@ namespace TFU001.Extensions
             return Task.Run(() => ReadRecursive(client, variablePath, new JObject(), GetVaribleNameFromFullPath(variablePath)));
         }
 
-        public static JObject ReadRecursive(TcAdsClient client, string variablePath, JObject parent, string jsonName, bool isChild = false)
+        private static JObject ReadRecursive(TcAdsClient client, string variablePath, JObject parent, string jsonName, bool isChild = false)
         {
             var symbolInfo = (ITcAdsSymbol5)client.ReadSymbolInfo(variablePath);
             var dataType = symbolInfo.DataType;
