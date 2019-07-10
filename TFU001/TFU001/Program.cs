@@ -47,39 +47,54 @@ namespace TFU001
         }
         public async Task OnExecute()
         {
-            var handle = GetConsoleWindow();
-            ShowWindow(handle, SW_HIDE);
-            
-            CreateLogger();
-            var adsClient = await ConnectToBeckhoff();
-            var callAddress = Address.IsValidUrl() ? Address : await adsClient.ReadAsync<string>(Address);            
+            TcAdsClient adsClient = new TcAdsClient { Synchronize = false, }; ;
+            try
+            {
+                var handle = GetConsoleWindow();
+                ShowWindow(handle, SW_HIDE);
 
-            var restClient = new RestClient();
-            var request = new RestRequest(callAddress, Method);
-            var jsonBody = adsClient.ReadJson(Body);
-            request.RequestFormat = DataFormat.Json;
-            request.AddParameter("text/json", jsonBody.ToString(), ParameterType.RequestBody);
+                CreateLogger();
+                var logger = LoggerFactory.GetLogger();
 
-            var response = await restClient.ExecuteTaskAsync(request);
+                logger.Debug("Starting API Call");
+                logger.Debug($"Connecting to Beckhoff Port: {AdsPort} - AdsNet: '{AdsNetId}'");
+                adsClient.Connect(AdsNetId, AdsPort);
 
-            Console.WriteLine(response.Content);
-            
-            await adsClient.WriteAsync(ResponseCode, response.StatusCode);
+                var callAddress = Address.IsValidUrl() ? Address : await adsClient.ReadAsync<string>(Address);
+                logger.Debug($"Url: {callAddress}");
+                logger.Debug($"Method: {Method}");
 
-            //todo: write response
-            var jsonResponse = JObject.Parse(response.Content);
+                var restClient = new RestClient();
+                var request = new RestRequest(callAddress, Method);
+                var jsonBody = adsClient.ReadJson(Body);
+                request.RequestFormat = DataFormat.Json;
+                request.AddParameter("text/json", jsonBody.ToString(), ParameterType.RequestBody);
+                logger.Debug($"Body: {jsonBody}");
+                
+                logger.Debug($"Executing...");
+                var response = await restClient.ExecuteTaskAsync(request);
 
-            adsClient.Disconnect();
-            adsClient.Dispose();
+                logger.Debug($"Response code: {response.StatusCode}");
+                logger.Debug($"Response content: {response.Content}");
+                
+                logger.Debug($"Wrinting status code...");
+                await adsClient.WriteAsync(ResponseCode, response.StatusCode);
+
+                var jsonResponse = JObject.Parse(response.Content);
+                logger.Debug($"Wrinting json response...");
+                await adsClient.WriteJson(Response, jsonResponse);
+
+                adsClient.Disconnect();
+                adsClient.Dispose();
+            }
+            catch (Exception e)
+            {
+
+            }
+            finally
+            {
+                adsClient?.Dispose();
+            }
         }
-
-        private Task<TcAdsClient> ConnectToBeckhoff()
-        {
-            var adsClient = new TcAdsClient { Synchronize = false, };
-            adsClient.Connect(AdsNetId, AdsPort);
-            return Task.FromResult(adsClient);
-        }
-
-        
     }
 }
