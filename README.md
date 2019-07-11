@@ -15,7 +15,9 @@ If you are going to buy the [TF6760 | TC3 IoT HTTPS/REST](https://www.beckhoff.c
 ### Reference the BeckhoffHttpClient Library
 
 Download and reference the BeckhoffHttpClient library and import it to your project.
-<img align="Left" src="https://raw.githubusercontent.com/fbarresi/BeckhoffHttpClient/master/doc/images/BeckhoffHttpClientLibrary.png">
+
+![](https://github.com/fbarresi/BeckhoffHttpClient/raw/master/doc/images/BeckhoffHttpClientLibrary.png)
+
 You can now declare and call a Client in your program and start using rest API.
 
 ```
