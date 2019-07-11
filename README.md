@@ -15,8 +15,8 @@ If you are going to buy the [TF6760 | TC3 IoT HTTPS/REST](https://www.beckhoff.c
 ### Reference the BeckhoffHttpClient Library
 
 Download and reference the BeckhoffHttpClient library and import it to your project.
-
-You can now declare a new Client in your program and start calling API.
+<img align="Left" src="https://raw.githubusercontent.com/fbarresi/BeckhoffHttpClient/master/doc/images/BeckhoffHttpClientLibrary.png">
+You can now declare and call a Client in your program and start using rest API.
 
 ```
 PROGRAM MAIN
@@ -24,9 +24,20 @@ VAR
 	client : HttpClient;
 END_VAR
 ```
+```
+client(
+	Execute:=FALSE , 
+	Address:= 'https://dog.ceo/api/breeds/image/random', 
+	CallMethod:= 'GET' , 
+	Body:= '', 
+	ResponseCode:= 'GVL.ResponseCode', 
+	Response:= 'GVL.Response',  
+	HasError=> , 
+	ErrorId=> );
+```
 
 ### The JSON Attribute
-This software can parse and convert normal DUTs (also nested DUTs) into Json object.
+This software can parse and convert normal DUTs (also nested DUTs) into Json object thaks to the power of [TwinCAT.JsonExtension](https://github.com/fbarresi/TwinCAT.JsonExtension).
 The only things you have to do is to add the JSON attribute to your code like follows and specify if your field has another json-name or can be used with its own name.
 
 ```

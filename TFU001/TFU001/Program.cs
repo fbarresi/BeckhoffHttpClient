@@ -66,7 +66,7 @@ namespace TFU001
 
                 var restClient = new RestClient();
                 var request = new RestRequest(callAddress, Method);
-                var jsonBody = adsClient.ReadJson(Body);
+                var jsonBody = !string.IsNullOrEmpty(Body) ? await adsClient.ReadJson(Body) : new JObject();
                 request.RequestFormat = DataFormat.Json;
                 request.AddParameter("text/json", jsonBody.ToString(), ParameterType.RequestBody);
                 logger.Debug($"Body: {jsonBody}");
@@ -76,13 +76,19 @@ namespace TFU001
 
                 logger.Debug($"Response code: {response.StatusCode}");
                 logger.Debug($"Response content: {response.Content}");
-                
-                logger.Debug($"Wrinting status code...");
-                await adsClient.WriteAsync(ResponseCode, response.StatusCode);
+
+                if (!string.IsNullOrEmpty(ResponseCode))
+                {
+                    logger.Debug($"Wrinting status code into {ResponseCode}...");
+                    await adsClient.WriteAsync(ResponseCode, response.StatusCode);
+                }
 
                 var jsonResponse = JObject.Parse(response.Content);
-                logger.Debug($"Wrinting json response...");
-                await adsClient.WriteJson(Response, jsonResponse);
+                if (!string.IsNullOrEmpty(Response))
+                {
+                    logger.Debug($"Wrinting json response into {Response}...");
+                    await adsClient.WriteJson(Response, jsonResponse);
+                }
 
                 adsClient.Disconnect();
                 adsClient.Dispose();
