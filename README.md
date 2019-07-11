@@ -1,5 +1,8 @@
 Beckhoff Http Client
 ======
+[![Build status](https://ci.appveyor.com/api/projects/status/bhsi49foyc8tnve2?svg=true)](https://ci.appveyor.com/project/fbarresi/beckhoffhttpclient)
+![Licence](https://img.shields.io/github/license/fbarresi/Beckhoffhttpclient.svg)
+
 Unofficial TwinCAT function for HTTP-Client and Json conversion
 
 This open source library allow any beckhoff to make API requests with an HTTP/HTTPS client.
