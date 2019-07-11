@@ -48,13 +48,14 @@ namespace TFU001
         public async Task OnExecute()
         {
             TcAdsClient adsClient = new TcAdsClient { Synchronize = false, }; ;
+            var handle = GetConsoleWindow();
+            ShowWindow(handle, SW_HIDE);
+
+            CreateLogger();
+            var logger = LoggerFactory.GetLogger();
+            
             try
             {
-                var handle = GetConsoleWindow();
-                ShowWindow(handle, SW_HIDE);
-
-                CreateLogger();
-                var logger = LoggerFactory.GetLogger();
 
                 logger.Debug("Starting API Call");
                 logger.Debug($"Connecting to Beckhoff Port: {AdsPort} - AdsNet: '{AdsNetId}'");
@@ -91,11 +92,10 @@ namespace TFU001
                 }
 
                 adsClient.Disconnect();
-                adsClient.Dispose();
             }
             catch (Exception e)
             {
-
+                logger.Error(e, "Error while calling API");
             }
             finally
             {
