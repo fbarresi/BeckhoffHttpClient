@@ -95,7 +95,8 @@ namespace TFU001
             }
             catch (Exception e)
             {
-                logger.Error(e, "Error while calling API");
+                logger.Error($"Error while calling API: {e}");
+                logger.Error($"{e.StackTrace}");
             }
             finally
             {
