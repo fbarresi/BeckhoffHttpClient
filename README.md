@@ -8,6 +8,13 @@ Unofficial TwinCAT function for HTTP-Client and Json conversion
 This open source library allow any beckhoff to make API requests with an HTTP/HTTPS client.
 If you are going to buy the [TF6760 | TC3 IoT HTTPS/REST](https://www.beckhoff.com.ph/default.asp?twincat/tf6760.htm) (planned for End 2019, not realized yet) you should first read this page and wonder how open-source software can simplify your life.
 
+## Key features
+
+- support HTTP/HTTPS API calls
+- support **all** API methods (GET, POST, PUT, DELETE etc.) 
+- reads any Json body with complex nested structures
+- parse any Json response to plc structure
+
 ## Prepare your PLC
 
 - Install the _unofficial_ TwinCAT Function [TFU001](https://github.com/fbarresi/BeckhoffHttpClient/releases) on your target system
@@ -60,3 +67,14 @@ STRUCT
 END_STRUCT
 END_TYPE
 ```
+
+## Planned features (not supported yet)
+
+- custom API header
+- API keys
+
+## Would you like to contribute?
+
+Yes, please!
+Try the library and feel free to open issues or ask for more support. 
+Don't forget to **star this project**! 
