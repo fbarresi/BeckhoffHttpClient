@@ -17,7 +17,7 @@ If you are going to buy the [TF6760 | TC3 IoT HTTPS/REST](https://www.beckhoff.c
 
 ### Reference the BeckhoffHttpClient Library
 
-Download and reference the BeckhoffHttpClient library and import it to your project.
+Download and reference the [BeckhoffHttpClient library](https://github.com/fbarresi/BeckhoffHttpClient/releases) and import it to your project.
 
 ![](https://github.com/fbarresi/BeckhoffHttpClient/raw/master/doc/images/BeckhoffHttpClientLibrary.png)
 
