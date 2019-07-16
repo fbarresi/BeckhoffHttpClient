@@ -10,6 +10,7 @@ If you are going to buy the [TF6760 | TC3 IoT HTTPS/REST](https://www.beckhoff.c
 
 ## Key features
 
+- **NO Licence** costs (This software is free also for commercial uses)
 - support HTTP/HTTPS API calls
 - support **all** API methods (GET, POST, PUT, DELETE, HEAD, OPTIONS, PATCH, MERGE, COPY) 
 - reads any Json body with complex nested structures
