@@ -6,7 +6,7 @@
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
-    <MediaTemplate />
+    <MediaTemplate EmbedCab="yes"/>
 
     <Feature Id="ProductFeature" Title="TFU001 Beckhoff Http Client" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
@@ -33,9 +33,7 @@
 
     </UI>
     <UIRef Id="WixUI_Common" />
-
   </Product>
-
 
   <Fragment>
     <SetDirectory Id="TWINCAT" Value="[WindowsVolume]TwinCAT"/>
