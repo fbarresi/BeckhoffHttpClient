@@ -5,7 +5,7 @@ Beckhoff Http Client
 
 Unofficial TwinCAT function for HTTP requests with json conversion
 
-This open source library allow any beckhoff to make API requests with an HTTP/HTTPS client.
+This open source library allow any beckhoff PLC (except the ones based on [Windows CE](https://github.com/fbarresi/BeckhoffHttpClient/issues/1#issuecomment-527231410)) to make API requests with an HTTP/HTTPS client.
 If you are going to buy the [TF6760 | TC3 IoT HTTPS/REST](https://www.beckhoff.com.ph/default.asp?twincat/tf6760.htm) (planned for End 2019, not realized yet) you should first read this page and wonder how open-source software can simplify your life.
 
 ## Key features
