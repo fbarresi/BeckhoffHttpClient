@@ -5,6 +5,6 @@ namespace TFU001
 {
     public class Constants
     {
-        public const string LoggingRepositoryName = "TFU001";
+        public static string LoggingRepositoryName => "TFU001";
     }
 }
