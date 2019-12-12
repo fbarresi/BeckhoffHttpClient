@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -53,7 +54,8 @@ namespace TFU001
 
             CreateLogger();
             var logger = LoggerFactory.GetLogger();
-            
+            var header = GetOrCreateHeader();
+
             try
             {
 
@@ -67,6 +69,13 @@ namespace TFU001
 
                 var restClient = new RestClient();
                 var request = new RestRequest(callAddress, Method);
+
+                foreach (var item in header)
+                {
+                    logger.Debug($"Adding header: \"{item.Key}\" : \"{item.Value}\"");
+                    request.AddHeader(item.Key, item.Value);
+                }
+
                 var jsonBody = !string.IsNullOrEmpty(Body) ? await adsClient.ReadJson(Body) : new JObject();
                 request.RequestFormat = DataFormat.Json;
                 request.AddParameter("text/json", jsonBody.ToString(), ParameterType.RequestBody);
@@ -102,6 +111,37 @@ namespace TFU001
             {
                 adsClient?.Dispose();
             }
+        }
+
+        private Dictionary<string, string> GetOrCreateHeader()
+        {
+            var logger = LoggerFactory.GetLogger();
+            var header = new Dictionary<string, string>();
+            var headerfile = "header.json";
+
+            if (File.Exists(headerfile))
+            {
+                logger.Debug("Reading header file (header.json)...");
+                try
+                {
+                    var text = File.ReadAllText(headerfile);
+                    header = JsonConvert.DeserializeObject<Dictionary<string, string>>(text);
+                }
+                catch (Exception e)
+                {
+                    logger.Error("Error while reading the header file - skipping header parsing", e);
+                }
+            }
+            else
+            {
+                logger.Debug("No header file found...");
+                logger.Debug("Writing an example header");
+                var example = new Dictionary<string, string>{{"api_key","D9C80CF1-C910-41F4-BD7B-D51B72B573AA"},{"Authentication", "api_key"}};
+                var exampleFile = JsonConvert.SerializeObject(example, Formatting.Indented);
+                File.WriteAllText("header_example.json", exampleFile);
+            }
+
+            return header;
         }
     }
 }
