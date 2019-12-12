@@ -71,10 +71,11 @@ END_STRUCT
 END_TYPE
 ```
 
-## Planned features
+## Use an API header
 
-- custom request header
-- API keys
+You can setup an application-wide header using the `header.json` file placed into `C:\TwinCAT\Functions\Unofficial\BeckhoffHttpClient\`.
+
+If no header file is provided the application will create an example file `header_example.json` you can directly rename, edit and use.
 
 ## Would you like to contribute?
 
