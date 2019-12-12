@@ -3,11 +3,12 @@ Beckhoff Http Client
 [![Build status](https://ci.appveyor.com/api/projects/status/bhsi49foyc8tnve2?svg=true)](https://ci.appveyor.com/project/fbarresi/beckhoffhttpclient)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ce95394710b143ae861a60d6fc938d8c)](https://www.codacy.com/manual/fbarresi/BeckhoffHttpClient?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fbarresi/BeckhoffHttpClient&amp;utm_campaign=Badge_Grade)
 ![Licence](https://img.shields.io/github/license/fbarresi/Beckhoffhttpclient.svg)
+![GitHub All Releases](https://img.shields.io/github/downloads/fbarresi/BeckhoffHttpClient/total)
 
 Unofficial TwinCAT function for HTTP requests with json conversion
 
 This open source library allow any beckhoff PLC (Windows CE based PLCs are not supported :disappointed_relieved: - see [this issue](https://github.com/fbarresi/BeckhoffHttpClient/issues/1#issuecomment-527231410)) to make API requests with an HTTP/HTTPS client.
-If you are going to buy the [TF6760 | TC3 IoT HTTPS/REST](https://www.beckhoff.com.ph/default.asp?twincat/tf6760.htm) (planned for End 2019, not realized yet) you should first read this page and wonder how open-source software can simplify your life.
+If you are going to buy the [TF6760 | TC3 IoT HTTPS/REST](https://www.beckhoff.com.ph/default.asp?twincat/tf6760.htm) (planned for End 2019, not realized yet - Dec '19) you should first read this page and wonder how open-source software can simplify your life.
 
 ## Key features
 
