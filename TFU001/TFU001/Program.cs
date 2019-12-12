@@ -47,7 +47,7 @@ namespace TFU001
         }
         public async Task OnExecute()
         {
-            TcAdsClient adsClient = new TcAdsClient { Synchronize = false };
+            var adsClient = new TcAdsClient { Synchronize = false };
             var handle = GetConsoleWindow();
             ShowWindow(handle, SW_HIDE);
 
