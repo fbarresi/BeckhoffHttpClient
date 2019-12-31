@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="TwinCAT.JsonExtension" Version="1.0.3" />
+    <PackageReference Include="TwinCAT.JsonExtension" Version="1.0.38" />
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="2.3.4" />
     <PackageReference Include="RestSharp" Version="106.6.9" />
     <PackageReference Include="Costura.Fody" Version="3.3.2" />

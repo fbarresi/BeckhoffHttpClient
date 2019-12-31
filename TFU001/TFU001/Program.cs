@@ -93,11 +93,26 @@ namespace TFU001
                     await adsClient.WriteAsync(ResponseCode, response.StatusCode);
                 }
 
-                var jsonResponse = JObject.Parse(response.Content);
-                if (!string.IsNullOrEmpty(Response))
+                //Try parsing object or array from response content
+                logger.Debug($"Wrinting json response into {Response}...");
+                try
                 {
-                    logger.Debug($"Wrinting json response into {Response}...");
-                    await adsClient.WriteJson(Response, jsonResponse);
+                    var objectResponse = JObject.Parse(response.Content);
+                    await adsClient.WriteJson(Response, objectResponse);
+                }
+                catch (JsonReaderException exception)
+                {
+                    logger.Error("Unable to write response content parsing a json object", exception);
+                    
+                    try
+                    {
+                        var arrayResponse = JArray.Parse(response.Content);
+                        await adsClient.WriteJson(Response, arrayResponse);
+                    }
+                    catch (JsonReaderException innerException)
+                    {
+                        logger.Error("Unable to write response content parsing a json array", innerException);
+                    }
                 }
 
                 adsClient.Disconnect();
