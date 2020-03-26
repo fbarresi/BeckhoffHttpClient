@@ -91,7 +91,7 @@ Don't forget to **star this project**!
 Check other project you may be interested in:
 
 - [BeckhoffS7Client](https://github.com/fbarresi/BeckhoffS7Client) S7 PLC communication library.
-- [TwinCatAdsTool](https://github.com/fbarresi/TwinCatAdsTool) Analyse and management tool for every TwinCat PLC
+- [TwinCatAdsTool](https://github.com/fbarresi/TwinCatAdsTool) Management tool for every TwinCat PLC
 
 ## Credits
 
