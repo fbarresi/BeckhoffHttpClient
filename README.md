@@ -85,3 +85,17 @@ Yes, please!
 Try the library and feel free to open an issue or ask for support. 
 
 Don't forget to **star this project**! 
+
+## Other projects
+
+Check other project you may be interested in:
+
+- [BeckhoffS7Client](https://github.com/fbarresi/BeckhoffS7Client) S7 PLC communication library.
+- [TwinCatAdsTool](https://github.com/fbarresi/TwinCatAdsTool) Analyse and management tool for every TwinCat PLC
+
+## Credits
+
+Special thanks to [JetBrains](https://www.jetbrains.com/?from=BeckhoffHttpClient) for supporting this open source project.
+
+<a href="https://www.jetbrains.com/?from=BeckhoffHttpClient"><img height="200" src="https://www.jetbrains.com/company/brand/img/jetbrains_logo.png"></a>
+
