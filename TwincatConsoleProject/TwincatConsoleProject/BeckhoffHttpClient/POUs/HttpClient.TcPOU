@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
   <POU Name="HttpClient" Id="{34d9c780-99db-49b3-b63f-ca9c5a975f9d}" SpecialFunc="None">
     <Declaration><![CDATA[{attribute 'signature_flag' := '1073741824'}
 FUNCTION_BLOCK PUBLIC HttpClient
 VAR_INPUT
 	Execute : BOOL; //REST Call runs on rising edge of this flag 
-	Address : STRING := 'https://dog.ceo/api/breeds/image/random'; //Rest API Address
-	CallMethod : STRING := 'GET'; //Allowed values are: GET, POST, PUT, DELETE, HEAD, OPTIONS, PATCH, MERGE, COPY.
-	Body : STRING; //Variable path or string for json body
-	ResponseCode : STRING; //Variable path to INT for response code
-	Response : STRING; //Starting variable path to the response
+	Address : STRING(255) := 'https://dog.ceo/api/breeds/image/random'; //Rest API Address
+	CallMethod : STRING(255) := 'GET'; //Allowed values are: GET, POST, PUT, DELETE, HEAD, OPTIONS, PATCH, MERGE, COPY.
+	Body : STRING(255); //Variable path or string for json body
+	ResponseCode : STRING(255); //Variable path to INT for response code
+	Response : STRING(255); //Starting variable path to the response
 	Port : UINT := 0; //Ads Port for connection. Leave 0 for Port number 851
 END_VAR
 VAR_OUTPUT
