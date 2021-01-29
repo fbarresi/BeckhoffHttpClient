@@ -15,7 +15,7 @@
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="2.3.4" />
     <PackageReference Include="RestSharp" Version="106.6.9" />
     <PackageReference Include="Costura.Fody" Version="3.3.2" />
-    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="log4net" Version="2.0.10" />
   </ItemGroup>
 
   <ItemGroup>
