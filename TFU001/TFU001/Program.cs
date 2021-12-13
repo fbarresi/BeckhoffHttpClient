@@ -26,7 +26,6 @@ namespace TFU001
         static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
         const int SW_HIDE = 0;
-        //const int SW_SHOW = 5;
         
         public static int Main(string[] args)
             => CommandLineApplication.Execute<Program>(args);
