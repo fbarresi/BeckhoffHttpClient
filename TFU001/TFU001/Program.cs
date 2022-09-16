@@ -77,7 +77,7 @@ namespace TFU001
 
                 var jsonBody = !string.IsNullOrEmpty(Body) ? await adsClient.ReadJson(Body) : new JObject();
                 request.RequestFormat = DataFormat.Json;
-                request.AddParameter("text/json", jsonBody.ToString(), ParameterType.RequestBody);
+                request.AddParameter("application/json", jsonBody.ToString(), ParameterType.RequestBody);
                 logger.Debug($"Body: {jsonBody}");
                 
                 logger.Debug($"Executing...");
