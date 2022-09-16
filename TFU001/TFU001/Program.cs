@@ -47,7 +47,7 @@ namespace TFU001
         }
         public async Task OnExecute()
         {
-            var adsClient = new TcAdsClient { Synchronize = false };
+            var adsClient = new AdsClient();
             var handle = GetConsoleWindow();
             ShowWindow(handle, SW_HIDE);
 
@@ -118,8 +118,8 @@ namespace TFU001
             }
             catch (Exception e)
             {
-                logger.Error($"Error while calling API: {e}");
-                logger.Error($"{e.StackTrace}");
+                logger.Error($"Error while calling API: {e}", e);
+                logger.Error($"Stack Trace:\n{e.StackTrace}");
             }
             finally
             {
