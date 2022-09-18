@@ -60,7 +60,17 @@ namespace TFU001
 
                 logger.Debug("Starting API Call");
                 logger.Debug($"Connecting to Beckhoff Port: {AdsPort} - AdsNet: '{AdsNetId}'");
-                adsClient.Connect(AdsNetId, AdsPort);
+                
+                if (string.IsNullOrEmpty(AdsNetId))
+                {
+                    adsClient.Connect(AdsPort);
+                }
+                else
+                {
+                    adsClient.Connect(AdsNetId, AdsPort);
+                }
+                
+                logger.Debug($"Beckhoff connection state: {adsClient.ConnectionState}");
 
                 var callAddress = Address.IsValidUrl() ? Address : await adsClient.ReadAsync<string>(Address);
                 logger.Debug($"Url: {callAddress}");
@@ -88,32 +98,35 @@ namespace TFU001
 
                 if (!string.IsNullOrEmpty(ResponseCode))
                 {
-                    logger.Debug($"Wrinting status code into {ResponseCode}...");
+                    logger.Debug($"Writing status code into {ResponseCode}...");
                     await adsClient.WriteAsync(ResponseCode, response.StatusCode);
+                    logger.Debug($"Written status code into {ResponseCode}.");
                 }
 
                 //Try parsing object or array from response content
-                logger.Debug($"Wrinting json response into {Response}...");
+                logger.Debug($"Writing json response into {Response}...");
                 try
                 {
                     var objectResponse = JObject.Parse(response.Content);
                     await adsClient.WriteJson(Response, objectResponse);
+                    logger.Debug($"Written response into {Response}.");
                 }
                 catch (JsonReaderException exception)
                 {
-                    logger.Error("Unable to write response content parsing a json object", exception);
+                    logger.Error("Unable to write response content parsing a json object - 2nd try with json array", exception);
                     
                     try
                     {
                         var arrayResponse = JArray.Parse(response.Content);
                         await adsClient.WriteJson(Response, arrayResponse);
+                        logger.Debug($"Written response into {Response}.");
                     }
                     catch (JsonReaderException innerException)
                     {
                         logger.Error("Unable to write response content parsing a json array", innerException);
                     }
                 }
-
+                logger.Debug($"Disconnecting to Beckhoff");
                 adsClient.Disconnect();
             }
             catch (Exception e)
